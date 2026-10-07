@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jordan National Football Team</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #c8102e;
+      --green: #007a3d;
+      --black: #101010;
+      --white: #ffffff;
+      --gold: #d7a84b;
+      --light: #f7f7f7;
+      --text: #151515;
+      --muted: #444;
+      --card: #ffffff;
+      --shadow: 0 14px 38px rgba(0, 0, 0, 0.16);
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    body.ar { direction: rtl; font-family: Tahoma, Arial, sans-serif; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: rgba(16, 16, 16, 0.97);
+      color: white;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+
+    nav {
+      max-width: 1280px;
+      margin: auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 20px; }
+
+    .flag-icon { width: 42px; height: 28px; border-radius: 5px; overflow: hidden; border: 1px solid rgba(255,255,255,0.35); }
+    .flag-icon div:nth-child(1) { height: 33.3%; background: #000; }
+    .flag-icon div:nth-child(2) { height: 33.3%; background: #fff; }
+    .flag-icon div:nth-child(3) { height: 33.3%; background: #007a3d; }
+
+    .nav-links { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      transition: 0.25s;
+    }
+    .nav-links a:hover { background: var(--red); transform: translateY(-2px); }
+
+    .lang-btn {
+      border: 0;
+      background: var(--red);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .lang-btn:hover { background: var(--green); }
+
+    section { padding: 72px 20px; }
+    .container { max-width: 1220px; margin: auto; }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 40px);
+      text-align: center;
+      margin-bottom: 12px;
+      color: var(--black);
+    }
+
+    .section-subtitle {
+      text-align: center;
+      max-width: 850px;
+      margin: 0 auto 42px;
+      color: var(--muted);
+      font-size: 17px;
+      background: rgba(255,255,255,0.65);
+      padding: 12px 18px;
+      border-radius: 14px;
+    }
+
+    .hero {
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+      background:
+        linear-gradient(rgba(0,0,0,0.66), rgba(0,0,0,0.78)),
+        url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Flag_of_Jordan.svg/1280px-Flag_of_Jordan.svg.png') center/cover no-repeat;
+      color: white;
+      overflow: hidden;
+    }
+
+    .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; align-items: center; gap: 44px; }
+    .hero h1 { font-size: clamp(38px, 6vw, 68px); line-height: 1.05; margin-bottom: 20px; color: white; }
+    .hero p { font-size: 20px; margin-bottom: 30px; color: #fff; }
+
+    .hero-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn { display: inline-block; text-decoration: none; color: white; padding: 13px 22px; border-radius: 12px; font-weight: 900; transition: 0.25s; }
+    .btn-red { background: var(--red); }
+    .btn-green { background: var(--green); }
+    .btn:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0,0,0,0.25); }
+
+    .team-photo-card {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 28px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      animation: floatTeam 4s ease-in-out infinite;
+    }
+
+    .team-photo {
+      min-height: 360px;
+      border-radius: 22px;
+      background:
+        linear-gradient(160deg, rgba(200,16,46,0.70), rgba(0,122,61,0.70)),
+        url('team-group.jpg') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .team-photo-content { position: relative; z-index: 2; background: rgba(0,0,0,0.58); padding: 22px; border-radius: 18px; }
+    .team-photo-content h2 { font-size: 34px; color: white; margin-bottom: 10px; }
+    .team-photo-content p { color: white; margin: 0; }
+
+    @keyframes floatTeam { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-18px); } }
+
+    .stats-strip { background: var(--black); color: white; padding: 34px 20px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; text-align: center; }
+    .stat-box { background: rgba(255,255,255,0.09); border-radius: 18px; padding: 24px 14px; border: 1px solid rgba(255,255,255,0.14); }
+    .stat-box strong { display: block; font-size: 34px; color: var(--gold); margin-bottom: 6px; }
+
+    .players-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 24px; }
+
+    .player-card {
+      position: relative;
+      min-height: 360px;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: #d7d7d7;
+      cursor: pointer;
+      border: 1px solid #ddd;
+    }
+
+    .player-card img { width: 100%; height: 100%; position: absolute; object-fit: cover; inset: 0; transition: 0.35s; }
+    .player-card:hover img { transform: scale(1.08); filter: brightness(0.45); }
+
+    .player-mini {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 18px;
+      color: white;
+      background: linear-gradient(transparent, rgba(0,0,0,0.94));
+      z-index: 2;
+    }
+    .player-mini h3, .player-mini p { color: white; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
+
+    .player-info {
+      position: absolute;
+      inset: auto 14px 14px 14px;
+      background: #ffffff;
+      color: #111111;
+      padding: 18px;
+      border-radius: 16px;
+      transform: translateY(125%);
+      opacity: 0;
+      transition: 0.35s;
+      z-index: 3;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+      border: 2px solid rgba(200,16,46,0.18);
+    }
+    .player-card:hover .player-info { transform: translateY(0); opacity: 1; }
+    .player-info h3 { color: var(--red); margin-bottom: 8px; }
+    .player-info p { font-size: 14px; margin: 4px 0; color: #111; }
+
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+    .info-card {
+      background: var(--card);
+      color: #111;
+      padding: 24px;
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      border-top: 6px solid var(--red);
+      transition: 0.25s;
+    }
+    .info-card:hover { transform: translateY(-8px); }
+    .info-card h3 { margin-bottom: 12px; color: var(--red); }
+    .info-card p, .info-card li { color: #222; }
+    .info-card ul { padding-inline-start: 20px; }
+
+    .coach-card { overflow: hidden; padding: 0; }
+    .coach-card img { width: 100%; height: 260px; object-fit: cover; display: block; background: #ddd; }
+    .coach-body { padding: 22px; }
+
+    .dark-section { background: linear-gradient(135deg, #111, #2b2b2b); color: white; }
+    .dark-section .section-title { color: white; }
+    .dark-section .section-subtitle { color: #111; background: #ffffff; }
+
+    .kit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 26px; }
+    .kit-card { background: white; color: var(--black); border-radius: 24px; padding: 28px; text-align: center; box-shadow: var(--shadow); }
+    .shirt { width: 135px; height: 145px; margin: 0 auto 20px; clip-path: polygon(20% 0,36% 0,42% 14%,58% 14%,64% 0,80% 0,100% 24%,82% 38%,82% 100%,18% 100%,18% 38%,0 24%); border-radius: 18px; box-shadow: inset 0 -18px 28px rgba(0,0,0,0.18); }
+    .home-kit { background: linear-gradient(135deg,#fff,#e8e8e8); border: 4px solid #111; }
+    .away-kit { background: linear-gradient(135deg,#c8102e,#7a0618); }
+    .third-kit { background: linear-gradient(135deg,#007a3d,#024f29); }
+
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 18px; box-shadow: var(--shadow); background: white; color: #111; }
+    th, td { padding: 16px; text-align: center; border-bottom: 1px solid #eee; color: #111; }
+    th { background: var(--black); color: white; }
+    tr:hover td { background: #fff5f5; }
+
+    .formation-box { background: linear-gradient(160deg,#0b7a39,#045526); border-radius: 28px; padding: 28px; color: white; box-shadow: var(--shadow); }
+    .line { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; margin: 22px 0; }
+    .position { background: rgba(0,0,0,0.34); border: 1px solid rgba(255,255,255,0.42); padding: 12px 16px; border-radius: 999px; font-weight: 800; min-width: 120px; text-align: center; color: white; }
+    .bench { margin-top: 26px; background: rgba(0,0,0,0.28); padding: 18px; border-radius: 18px; color: white; }
+    .bench p, .bench h3 { color: white; }
+
+    .note { margin-top: 18px; padding: 16px; border-radius: 16px; background: #fff8df; border-inline-start: 6px solid var(--gold); color: #3a2b00; font-size: 15px; }
+
+    .ai-box {
+      max-width: 850px;
+      margin: auto;
+      background: white;
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+      border-top: 6px solid var(--green);
+    }
+
+    .chat-messages {
+      min-height: 240px;
+      max-height: 360px;
+      overflow-y: auto;
+      background: #f1f1f1;
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .bot-msg, .user-msg {
+      max-width: 82%;
+      padding: 12px 15px;
+      border-radius: 16px;
+      margin-bottom: 12px;
+      color: #111;
+      font-size: 15px;
+    }
+
+    .bot-msg {
+      background: #ffffff;
+      border: 1px solid #ddd;
+    }
+
+    .user-msg {
+      background: var(--red);
+      color: white;
+      margin-inline-start: auto;
+    }
+
+    .chat-input-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-input-row input {
+      flex: 1;
+      padding: 14px;
+      border-radius: 14px;
+      border: 2px solid #ddd;
+      font-size: 16px;
+      color: #111;
+      background: white;
+    }
+
+    .chat-input-row button {
+      border: 0;
+      background: var(--green);
+      color: white;
+      padding: 0 22px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .chat-input-row button:hover { background: var(--red); }
+
+    footer { background: #080808; color: white; text-align: center; padding: 32px 18px; }
+
+    @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } nav { flex-direction: column; } .stats-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 560px) { .stats-grid { grid-template-columns: 1fr; } th,td { font-size: 13px; padding: 10px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">
+        <div class="flag-icon"><div></div><div></div><div></div></div>
+        <span data-en="Jordan Team" data-ar="منتخب الأردن">Jordan Team</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#home" data-en="Home" data-ar="الرئيسية">Home</a></li>
+        <li><a href="#players" data-en="Players" data-ar="اللاعبون">Players</a></li>
+        <li><a href="#coaches" data-en="Coaches" data-ar="المدربون">Coaches</a></li>
+        <li><a href="#achievements" data-en="Achievements" data-ar="الإنجازات">Achievements</a></li>
+        <li><a href="#active" data-en="Most Active" data-ar="الأكثر مشاركة">Most Active</a></li>
+        <li><a href="#formation" data-en="Formation" data-ar="التشكيلة">Formation</a></li>
+        <li><a href="#matches" data-en="Matches" data-ar="المباريات">Matches</a></li>
+      </ul>
+      <button class="lang-btn" id="langBtn">العربية</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <h1 data-en="Jordan National Football Team" data-ar="المنتخب الأردني لكرة القدم">Jordan National Football Team</h1>
+          <p data-en="A proud national team representing Jordan with passion, teamwork, and ambition on the Asian and world football stage." data-ar="منتخب وطني يرفع اسم الأردن بشغف وروح جماعية وطموح في كرة القدم الآسيوية والعالمية.">A proud national team representing Jordan with passion, teamwork, and ambition on the Asian and world football stage.</p>
+          <div class="hero-buttons">
+            <a class="btn btn-red" href="#players" data-en="Meet the Players" data-ar="تعرف على اللاعبين">Meet the Players</a>
+            <a class="btn btn-green" href="#matches" data-en="View Matches" data-ar="عرض المباريات">View Matches</a>
+          </div>
+        </div>
+        <div class="team-photo-card">
+          <div class="team-photo">
+            <img src="c:\Users\admin\Pictures\Screenshots\لقطة شاشة 2026-04-29 145101.png" alt="description" width="600">
+            <div class="team-photo-content">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-strip">
+      <div class="container stats-grid">
+        <div class="stat-box"><strong>1949</strong><span data-en="Association Founded" data-ar="تأسيس الاتحاد">Association Founded</span></div>
+        <div class="stat-box"><strong>63</strong><span data-en="Current FIFA Ranking" data-ar="الترتيب الحالي في FIFA">Current FIFA Ranking</span></div>
+        <div class="stat-box"><strong>28</strong><span data-en="Squad Players" data-ar="عدد اللاعبين">Squad Players</span></div>
+        <div class="stat-box"><strong>2026</strong><span data-en="First World Cup" data-ar="أول كأس عالم">First World Cup</span></div>
+      </div>
+    </section>
+
+    <section id="players">
+      <div class="container">
+        <h2 class="section-title" data-en="Full Current Squad" data-ar="جميع لاعبي المنتخب الحاليين">Full Current Squad</h2>
+        <div class="players-grid" id="playersGrid"></div>
+      </div>
+    </section>
+
+    <section class="dark-section" id="coaches">
+      <div class="container">
+        <h2 class="section-title" data-en="Current and Former Coaches" data-ar="المدربون الحاليون والسابقون">Current and Former Coaches</h2>
+        <div class="cards-grid">
+          <article class="info-card coach-card">
+                       <img src="c:\Users\admin\Pictures\Screenshots\لقطة شاشة 2026-04-29 145409.png" alt="description" width="200">
+            <div class="coach-body">
+              <h3 data-en="Jamal Sellami" data-ar="جمال سلامي">Jamal Sellami</h3>
+              <p data-en="Current head coach of Jordan. He was appointed in 2024 after Hussein Ammouta left the role." data-ar="المدرب الحالي للمنتخب الأردني. تم تعيينه عام 2024 بعد رحيل الحسين عموتة.">Current head coach of Jordan. He was appointed in 2024 after Hussein Ammouta left the role.</p>
+              <p><b data-en="Joined:" data-ar="انضم:">Joined:</b> 2024</p>
+            </div>
+          </article>
+          <article class="info-card coach-card">
+            <img src="c:\Users\admin\Pictures\Screenshots\لقطة شاشة 2026-04-29 155408.png." onerror="this.src='https://ui-avatars.com/api/?name=Hussein+Ammouta&background=007a3d&color=fff&size=600';" alt="Hussein Ammouta">
+            <div class="coach-body">
+              <h3 data-en="Hussein Ammouta" data-ar="الحسين عموتة">Hussein Ammouta</h3>
+              <p data-en="Former coach who led Jordan to the AFC Asian Cup 2023 final." data-ar="مدرب سابق قاد الأردن إلى نهائي كأس آسيا 2023.">Former coach who led Jordan to the AFC Asian Cup 2023 final.</p>
+              <p><b data-en="Period:" data-ar="الفترة:">Period:</b> 2023 - 2024</p>
+            </div>
+          </article>
+          <article class="info-card coach-card">
+            <img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=900&q=80" alt="Technical Staff">
+            <div class="coach-body">
+              <h3 data-en="Technical Staff" data-ar="الجهاز الفني">Technical Staff</h3>
+              <p data-en="Assistant coaches, goalkeeper coach, fitness coach, medical team, and team administrators support the squad." data-ar="يشمل الجهاز الفني المدربين المساعدين ومدرب الحراس ومدرب اللياقة والطاقم الطبي والإداريين.">Assistant coaches, goalkeeper coach, fitness coach, medical team, and team administrators support the squad.</p>
+              <p><b data-en="Role:" data-ar="الدور:">Role:</b> Team preparation and performance support</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="achievements">
+      <div class="container">
+        <h2 class="section-title" data-en="Achievements, Ranking, and Kits" data-ar="الإنجازات والترتيب والأطقم">Achievements, Ranking, and Kits</h2>
+        <p class="section-subtitle" data-en="Important achievements of the Jordan national team, its current ranking, and a description of the kits." data-ar="أهم إنجازات المنتخب الأردني وترتيبه الحالي ووصف الأطقم.">Important achievements of the Jordan national team, its current ranking, and a description of the kits.</p>
+        <div class="cards-grid">
+          <div class="info-card"><h3 data-en="Major Achievements" data-ar="أهم الإنجازات">Major Achievements</h3><ul><li data-en="Qualified for the FIFA World Cup 2026 for the first time." data-ar="التأهل إلى كأس العالم 2026 لأول مرة.">Qualified for the FIFA World Cup 2026 for the first time.</li><li data-en="Reached the final of the AFC Asian Cup 2023." data-ar="الوصول إلى نهائي كأس آسيا 2023.">Reached the final of the AFC Asian Cup 2023.</li><li data-en="Strong performances in Asian qualifiers and regional competitions." data-ar="مستويات قوية في التصفيات الآسيوية والبطولات الإقليمية.">Strong performances in Asian qualifiers and regional competitions.</li></ul></div>
+          <div class="info-card"><h3 data-en="Current Ranking" data-ar="الترتيب الحالي">Current Ranking</h3><p data-en="Jordan is currently around FIFA rank 63. Rankings may change after every international window." data-ar="يحتل المنتخب الأردني حاليًا تقريبًا المركز 63 في تصنيف FIFA، وقد يتغير الترتيب بعد كل فترة دولية.">Jordan is currently around FIFA rank 63. Rankings may change after every international window.</p></div>
+          <div class="info-card"><h3 data-en="Team Identity" data-ar="هوية المنتخب">Team Identity</h3><p data-en="The team colors are inspired by the Jordanian flag: black, white, green, and red." data-ar="ألوان المنتخب مستوحاة من العلم الأردني: الأسود والأبيض والأخضر والأحمر.">The team colors are inspired by the Jordanian flag: black, white, green, and red.</p></div>
+        </div>
+        <div class="kit-grid" style="margin-top:36px;">
+          <div class="kit-card"><div class="shirt home-kit"></div><h3 data-en="Home Kit" data-ar="الطقم الأساسي">Home Kit</h3><p data-en="Usually white with Jordan flag colors as details." data-ar="غالبًا أبيض مع تفاصيل من ألوان العلم الأردني.">Usually white with Jordan flag colors as details.</p></div>
+          <div class="kit-card"><div class="shirt away-kit"></div><h3 data-en="Away Kit" data-ar="الطقم الاحتياطي">Away Kit</h3><p data-en="Red design representing strength and national pride." data-ar="تصميم أحمر يرمز للقوة والفخر الوطني.">Red design representing strength and national pride.</p></div>
+          <div class="kit-card"><div class="shirt third-kit"></div><h3 data-en="Third Kit" data-ar="الطقم الثالث">Third Kit</h3><p data-en="Green design inspired by the Jordanian flag." data-ar="تصميم أخضر مستوحى من العلم الأردني.">Green design inspired by the Jordanian flag.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dark-section" id="active">
+      <div class="container">
+        <h2 class="section-title" data-en="Most Active Players" data-ar="اللاعبون الأكثر مشاركة">Most Active Players</h2>
+        <table>
+          <thead><tr><th data-en="Player" data-ar="اللاعب">Player</th><th data-en="Position" data-ar="المركز">Position</th><th data-en="Why Important?" data-ar="سبب الأهمية">Why Important?</th></tr></thead>
+          <tbody>
+            <tr><td data-en="Mousa Tamari" data-ar="موسى التعمري">Mousa Tamari</td><td data-en="Right Winger" data-ar="جناح أيمن">Right Winger</td><td data-en="A creative attacking star and one of Jordan's most valuable players." data-ar="نجم هجومي مبدع ومن أعلى لاعبي الأردن قيمة.">A creative attacking star and one of Jordan's most valuable players.</td></tr>
+            <tr><td data-en="Yazeed Abulaila" data-ar="يزيد أبو ليلى">Yazeed Abulaila</td><td data-en="Goalkeeper" data-ar="حارس مرمى">Goalkeeper</td><td data-en="Experienced goalkeeper and important national team player." data-ar="حارس صاحب خبرة ولاعب مهم في المنتخب.">Experienced goalkeeper and important national team player.</td></tr>
+            <tr><td data-en="Yazan Al-Arab" data-ar="يزن العرب">Yazan Al-Arab</td><td data-en="Centre-Back" data-ar="قلب دفاع">Centre-Back</td><td data-en="Strong defender with international experience." data-ar="مدافع قوي يمتلك خبرة دولية.">Strong defender with international experience.</td></tr>
+            <tr><td data-en="Nizar Al-Rashdan" data-ar="نزار الرشدان">Nizar Al-Rashdan</td><td data-en="Defensive Midfield" data-ar="وسط دفاعي">Defensive Midfield</td><td data-en="Important midfielder for balance and defensive support." data-ar="لاعب وسط مهم للتوازن والدعم الدفاعي.">Important midfielder for balance and defensive support.</td></tr>
+          </tbody>
+        </table>
+
+        <h3 style="color:white; text-align:center; margin:38px 0 18px;" data-en="Top Jordan Scorers in the Last 5 Years" data-ar="هدافو المنتخب الأردني في آخر 5 سنوات">Top Jordan Scorers in the Last 5 Years</h3>
+        <table>
+          <thead>
+            <tr>
+              <th data-en="Player" data-ar="اللاعب">Player</th>
+              <th data-en="Position" data-ar="المركز">Position</th>
+              <th data-en="Estimated Goals / Contribution" data-ar="الأهداف / المساهمة التقديرية">Estimated Goals / Contribution</th>
+              <th data-en="Notes" data-ar="ملاحظات">Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td data-en="Ali Olwan" data-ar="علي علوان">Ali Olwan</td><td data-en="Forward" data-ar="مهاجم">Forward</td><td data-en="Among the highest scorers recently" data-ar="من أكثر اللاعبين تسجيلًا مؤخرًا">Among the highest scorers recently</td><td data-en="Strong scoring record with Jordan in recent years." data-ar="يمتلك سجلًا تهديفيًا قويًا مع الأردن في السنوات الأخيرة.">Strong scoring record with Jordan in recent years.</td></tr>
+            <tr><td data-en="Yazan Al-Naimat" data-ar="يزن النعيمات">Yazan Al-Naimat</td><td data-en="Forward" data-ar="مهاجم">Forward</td><td data-en="Key scorer since 2021" data-ar="هداف مهم منذ 2021">Key scorer since 2021</td><td data-en="Scored important goals including in the Asian Cup." data-ar="سجل أهدافًا مهمة منها في كأس آسيا.">Scored important goals including in the Asian Cup.</td></tr>
+            <tr><td data-en="Mousa Tamari" data-ar="موسى التعمري">Mousa Tamari</td><td data-en="Right Winger" data-ar="جناح أيمن">Right Winger</td><td data-en="Major goal contributor" data-ar="مساهم تهديفي كبير">Major goal contributor</td><td data-en="Creates and scores from the wing." data-ar="يصنع ويسجل من مركز الجناح.">Creates and scores from the wing.</td></tr>
+            <tr><td data-en="Baha'a Faisal" data-ar="بهاء فيصل">Baha'a Faisal</td><td data-en="Centre-Forward" data-ar="مهاجم صريح">Centre-Forward</td><td data-en="Experienced national scorer" data-ar="هداف وطني صاحب خبرة">Experienced national scorer</td><td data-en="Long-time attacking option for Jordan." data-ar="خيار هجومي قديم ومهم للمنتخب.">Long-time attacking option for Jordan.</td></tr>
+            <tr><td data-en="Mahmoud Al-Mardi" data-ar="محمود مرضي">Mahmoud Al-Mardi</td><td data-en="Left Winger" data-ar="جناح أيسر">Left Winger</td><td data-en="Important recent goals" data-ar="أهداف مهمة مؤخرًا">Important recent goals</td><td data-en="Known for attacking runs and finishing." data-ar="معروف بالانطلاقات الهجومية وإنهاء الهجمات.">Known for attacking runs and finishing.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="formation">
+      <div class="container">
+        <h2 class="section-title" data-en="Current Formation and Bench" data-ar="التشكيلة الحالية والاحتياط">Current Formation and Bench</h2>
+        <div class="formation-box">
+          <h3 style="text-align:center; margin-bottom:10px; color:white;">4 - 2 - 3 - 1</h3>
+          <div class="line"><div class="position" data-en="Baha'a Faisal" data-ar="بهاء فيصل">Baha'a Faisal</div></div>
+          <div class="line"><div class="position" data-en="Mahmoud Al-Mardi" data-ar="محمود مرضي">Mahmoud Al-Mardi</div><div class="position" data-en="Noor Al-Rawabdeh" data-ar="نور الروابدة">Noor Al-Rawabdeh</div><div class="position" data-en="Mousa Tamari" data-ar="موسى التعمري">Mousa Tamari</div></div>
+          <div class="line"><div class="position" data-en="Nizar Al-Rashdan" data-ar="نزار الرشدان">Nizar Al-Rashdan</div><div class="position" data-en="Ibrahim Saadeh" data-ar="إبراهيم سعادة">Ibrahim Saadeh</div></div>
+          <div class="line"><div class="position" data-en="Mohammad Abu Hasheesh" data-ar="محمد أبو حشيش">Mohammad Abu Hasheesh</div><div class="position" data-en="Yazan Al-Arab" data-ar="يزن العرب">Yazan Al-Arab</div><div class="position" data-en="Abdallah Nasib" data-ar="عبدالله نصيب">Abdallah Nasib</div><div class="position" data-en="Ahmad Assaf" data-ar="أحمد عساف">Ahmad Assaf</div></div>
+          <div class="line"><div class="position" data-en="Yazeed Abulaila" data-ar="يزيد أبو ليلى">Yazeed Abulaila</div></div>
+          <div class="bench"><h3 data-en="Substitutes" data-ar="الاحتياط">Substitutes</h3><p data-en="Abdallah Al-Fakhouri, Abdel Rahman Al-Talalga, Husam Abu Dahab, Yousef Abu Al-Jazar, Mohammad Abualnadi, Saleem Obaid, Mohannad Abu Taha, Mohammad Taha, Amer Jamous, Mohammad Al-Dawoud, Yousef Qashi, Shararh, Ali Azaizeh, Ibrahim Sabra" data-ar="عبدالله الفاخوري، عبد الرحمن الطلالقة، حسام أبو دهب، يوسف أبو الجزر، محمد أبو النادي، سليم عبيد، مهند أبو طه، محمد طه، عامر جاموس، محمد الداود، يوسف قاشي، شرارة، علي عزيزية، إبراهيم صبرة">Abdallah Al-Fakhouri, Abdel Rahman Al-Talalga, Husam Abu Dahab, Yousef Abu Al-Jazar, Mohammad Abualnadi, Saleem Obaid, Mohannad Abu Taha, Mohammad Taha, Amer Jamous, Mohammad Al-Dawoud, Yousef Qashi, Shararh, Ali Azaizeh, Ibrahim Sabra</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dark-section" id="matches">
+      <div class="container">
+        <h2 class="section-title" data-en="Matches This Year" data-ar="مباريات هذا العام">Matches This Year</h2>
+        <table>
+          <thead><tr><th data-en="Date" data-ar="التاريخ">Date</th><th data-en="Match" data-ar="المباراة">Match</th><th data-en="Competition" data-ar="البطولة">Competition</th><th data-en="Result" data-ar="النتيجة">Result</th></tr></thead>
+          <tbody>
+            <tr><td>17 Jun 2026</td><td data-en="Austria vs Jordan" data-ar="النمسا ضد الأردن">Austria vs Jordan</td><td data-en="FIFA World Cup 2026" data-ar="كأس العالم 2026">FIFA World Cup 2026</td><td data-en="Upcoming" data-ar="قادمة">Upcoming</td></tr>
+            <tr><td>23 Jun 2026</td><td data-en="Jordan vs Algeria" data-ar="الأردن ضد الجزائر">Jordan vs Algeria</td><td data-en="FIFA World Cup 2026" data-ar="كأس العالم 2026">FIFA World Cup 2026</td><td data-en="Upcoming" data-ar="قادمة">Upcoming</td></tr>
+            <tr><td>28 Jun 2026</td><td data-en="Jordan vs Argentina" data-ar="الأردن ضد الأرجنتين">Jordan vs Argentina</td><td data-en="FIFA World Cup 2026" data-ar="كأس العالم 2026">FIFA World Cup 2026</td><td data-en="Upcoming" data-ar="قادمة">Upcoming</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+      <section id="ai-assistant">
+      <div class="container">
+        <h2 class="section-title" data-en="AI Team Assistant" data-ar="مساعد المنتخب الذكي">AI Team Assistant</h2>
+        <div class="ai-box">
+          <div id="chatMessages" class="chat-messages">
+            <div class="bot-msg" data-en="Hello! Ask me anything about the Jordan national football team." data-ar="مرحبًا! اسألني أي شيء عن المنتخب الأردني لكرة القدم.">Hello! Ask me anything about the Jordan national football team.</div>
+          </div>
+          <div class="chat-input-row">
+            <input id="userQuestion" type="text" data-placeholder-en="Example: Who is Mousa Tamari?" data-placeholder-ar="مثال: من هو موسى التعمري؟" placeholder="Example: Who is Mousa Tamari?">
+            <button id="askBtn" data-en="Ask AI" data-ar="اسأل AI">Ask AI</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer><p data-en="." data-ar="قام بتطوير هذا الموقع 
+رزان الفلاحات و لين البلوي">This website was developed by Razan Al-Fallahat and Leen Al-Balawie</p></footer>
+
+  <script>
+    const placeholder = (name, color = 'c8102e') => `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${color}&color=fff&size=600&bold=true`;
+
+    const players = [
+      
+      { name:'Yazeed Abulaila', arName:'يزيد أبو ليلى', age:33, joined:'2012', club:'Al-Hussein SC', position:'Goalkeeper', arPosition:'حارس مرمى', height:'1.79 m', birth:'8 January 1993', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Experienced goalkeeper and one of Jordan’s important senior players.', arInfo:'حارس مرمى صاحب خبرة ومن اللاعبين المهمين في المنتخب الأردني.', img:placeholder('Yazeed Abulaila','111111')},
+      { name:'Abdallah Al-Fakhouri', arName:'عبدالله الفاخوري', age:26, joined:'2021', club:'Al-Wehdat SC', position:'Goalkeeper', arPosition:'حارس مرمى', height:'1.87 m', birth:'22 January 2000', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Goalkeeper known for reflexes and club experience in Jordan.', arInfo:'حارس مرمى معروف بردات الفعل والخبرة في الأندية الأردنية.', img:placeholder('Abdallah Al-Fakhouri','111111') },
+      { name:'Abdel Rahman Al-Talalga', arName:'عبد الرحمن الطلالقة', age:23, joined:'2025', club:'Al-Faisaly SC', position:'Goalkeeper', arPosition:'حارس مرمى', height:'1.85 m', birth:'2003', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Young goalkeeper included as a future option for the squad.', arInfo:'حارس شاب ضمن خيارات المنتخب للمستقبل.', img:placeholder('Abdel Rahman Al-Talalga','111111') },
+      { name:'Yazan Al-Arab', arName:'يزن العرب', age:30, joined:'2016', club:'FC Seoul', position:'Centre-Back', arPosition:'قلب دفاع', height:'1.86 m', birth:'31 January 1996', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Strong central defender with international and club experience abroad.', arInfo:'مدافع قوي يمتلك خبرة دولية واحترافية خارج الأردن.', img:placeholder('Yazan Al-Arab','007a3d') },
+      { name:'Abdallah Nasib', arName:'عبدالله نصيب', age:32, joined:'2018', club:'Al-Zawraa SC', position:'Centre-Back', arPosition:'قلب دفاع', height:'1.85 m', birth:'25 February 1994', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Defender who provides physical strength and leadership at the back.', arInfo:'مدافع يمنح الخط الخلفي قوة بدنية وخبرة قيادية.', img:placeholder('Abdallah Nasib','007a3d') },
+      { name:'Husam Abu Dahab', arName:'حسام أبو دهب', age:25, joined:'2024', club:'Al-Faisaly SC', position:'Centre-Back', arPosition:'قلب دفاع', height:'1.83 m', birth:'2001', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Defensive option who adds depth to the centre-back position.', arInfo:'خيار دفاعي يضيف عمقًا لمركز قلب الدفاع.', img:placeholder('Husam Abu Dahab','007a3d') },
+      { name:'Yousef Abu Al-Jazar', arName:'يوسف أبو الجزر', age:26, joined:'2024', club:'Al-Hussein SC', position:'Centre-Back', arPosition:'قلب دفاع', height:'1.82 m', birth:'2000', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Centre-back used for defensive rotation and squad depth.', arInfo:'قلب دفاع يستخدم للدعم والتناوب الدفاعي.', img:placeholder('Yousef Abu Al-Jazar','007a3d') },
+      { name:'Mohammad Abualnadi', arName:'محمد أبو النادي', age:25, joined:'2024', club:'Selangor FC', position:'Centre-Back', arPosition:'قلب دفاع', height:'1.84 m', birth:'2001', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Defender with overseas club experience in Malaysia.', arInfo:'مدافع يمتلك تجربة احترافية خارجية في ماليزيا.', img:placeholder('Mohammad Abualnadi','007a3d') },
+      { name:'Saleem Obaid', arName:'سليم عبيد', age:34, joined:'2024', club:'Al-Hussein SC', position:'Centre-Back', arPosition:'قلب دفاع', height:'1.80 m', birth:'1992', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Experienced defender who supports the squad with maturity.', arInfo:'مدافع خبير يضيف النضج والخبرة للقائمة.', img:placeholder('Saleem Obaid','007a3d') },
+      { name:'Mohammad Abu Hasheesh', arName:'محمد أبو حشيش', age:30, joined:'2019', club:'Al-Karma', position:'Left-Back', arPosition:'ظهير أيسر', height:'1.76 m', birth:'1996', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Left-back who supports both defense and attack.', arInfo:'ظهير أيسر يساعد دفاعيًا وهجوميًا.', img:placeholder('Mohammad Abu Hasheesh','007a3d') },
+      { name:'Mohannad Abu Taha', arName:'مهند أبو طه', age:23, joined:'2025', club:'Al-Quwa Al-Jawiya', position:'Left-Back', arPosition:'ظهير أيسر', height:'1.77 m', birth:'2003', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Young wide defender with attacking movement.', arInfo:'مدافع طرف شاب يتميز بالحركة الهجومية.', img:placeholder('Mohannad Abu Taha','007a3d') },
+      { name:'Mohammad Taha', arName:'محمد طه', age:20, joined:'2025', club:'Al-Hussein SC', position:'Left-Back', arPosition:'ظهير أيسر', height:'1.75 m', birth:'2006', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Young full-back and one of the new squad options.', arInfo:'ظهير شاب ومن الخيارات الجديدة في المنتخب.', img:placeholder('Mohammad Taha','007a3d') },
+      { name:'Ahmad Assaf', arName:'أحمد عساف', age:26, joined:'2025', club:'Al-Hussein SC', position:'Right-Back', arPosition:'ظهير أيمن', height:'1.78 m', birth:'2000', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Right-back option for defensive balance and width.', arInfo:'ظهير أيمن يضيف توازنًا دفاعيًا وعرض الملعب.', img:placeholder('Ahmad Assaf','007a3d') },
+      { name:'Nizar Al-Rashdan', arName:'نزار الرشدان', age:27, joined:'2021', club:'Qatar SC', position:'Defensive Midfield', arPosition:'وسط دفاعي', height:'1.80 m', birth:'23 March 1999', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Midfielder who protects the defense and builds attacks from deep.', arInfo:'لاعب وسط يحمي الدفاع ويبني الهجمات من الخلف.', img:placeholder('Nizar Al-Rashdan','c8102e') },
+      { name:'Noor Al-Rawabdeh', arName:'نور الروابدة', age:29, joined:'2018', club:'Selangor FC', position:'Central Midfield', arPosition:'وسط', height:'1.79 m', birth:'24 February 1997', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Central midfielder known for work rate and passing.', arInfo:'لاعب وسط معروف بالمجهود والتمرير.', img:placeholder('Noor Al-Rawabdeh','c8102e') },
+      { name:'Amer Jamous', arName:'عامر جاموس', age:23, joined:'2025', club:'Al-Zawraa SC', position:'Central Midfield', arPosition:'وسط', height:'1.77 m', birth:'2003', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Young midfielder who adds energy to the squad.', arInfo:'لاعب وسط شاب يضيف الحيوية للقائمة.', img:placeholder('Amer Jamous','c8102e') },
+      { name:'Ibrahim Saadeh', arName:'إبراهيم سعادة', age:26, joined:'2021', club:'Al-Karma', position:'Central Midfield', arPosition:'وسط', height:'1.78 m', birth:'2000', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Midfielder who links defense and attack.', arInfo:'لاعب وسط يربط بين الدفاع والهجوم.', img:placeholder('Ibrahim Saadeh','c8102e') },
+      { name:'Mohammad Al-Dawoud', arName:'محمد الداود', age:33, joined:'2024', club:'Al-Wehdat SC', position:'Central Midfield', arPosition:'وسط', height:'1.78 m', birth:'1993', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Experienced midfielder with leadership qualities.', arInfo:'لاعب وسط صاحب خبرة وصفات قيادية.', img:placeholder('Mohammad Al-Dawoud','c8102e') },
+      { name:'Yousef Qashi', arName:'يوسف قاشي', age:21, joined:'2025', club:'Al-Hussein SC', position:'Central Midfield', arPosition:'وسط', height:'1.76 m', birth:'2005', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Young midfielder and developing national team talent.', arInfo:'لاعب وسط شاب وموهبة قيد التطور مع المنتخب.', img:placeholder('Yousef Qashi','c8102e') },
+      { name:'Mahmoud Al-Mardi', arName:'محمود مرضي', age:32, joined:'2015', club:'Al-Hussein SC', position:'Left Winger', arPosition:'جناح أيسر', height:'1.75 m', birth:'6 October 1993', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Winger known for runs, finishing, and important goals.', arInfo:'جناح معروف بالانطلاقات والإنهاء وتسجيل الأهداف المهمة.', img:placeholder('Mahmoud Al-Mardi','c8102e') },
+      { name:'Odeh Fakhoury', arName:'عودة فاخوري', age:20, joined:'2025', club:'Pyramids FC', position:'Left Winger', arPosition:'جناح أيسر', height:'1.74 m', birth:'2006', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Young winger with attacking potential.', arInfo:'جناح شاب يمتلك إمكانات هجومية.', img:placeholder('Odeh Fakhoury','c8102e') },
+      { name:'Mousa Tamari', arName:'موسى التعمري', age:28, joined:'2016', club:'Stade Rennais FC', position:'Right Winger', arPosition:'جناح أيمن', height:'1.78 m', birth:'10 June 1997', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'One of Jordan’s biggest stars; fast, skillful, and dangerous in attack.', arInfo:'من أكبر نجوم الأردن؛ سريع ومهاري وخطير هجوميًا.', img:placeholder('Mousa Tamari','c8102e') },
+      { name:'Shararh', arName:'شرارة', age:28, joined:'2024', club:'Raja Club Athletic', position:'Right Winger', arPosition:'جناح أيمن', height:'1.76 m', birth:'1998', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Right winger who adds speed and attacking options.', arInfo:'جناح أيمن يضيف السرعة والحلول الهجومية.', img:placeholder('Shararh','c8102e') },
+      { name:'Ali Azaizeh', arName:'علي عزيزية', age:22, joined:'2025', club:'Al-Shabab FC', position:'Right Winger', arPosition:'جناح أيمن', height:'1.75 m', birth:'2004', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Young winger and new attacking option.', arInfo:'جناح شاب وخيار هجومي جديد.', img:placeholder('Ali Azaizeh','c8102e') },
+      { name:'Ibrahim Sabra', arName:'إبراهيم صبرة', age:20, joined:'2025', club:'NK Lokomotiva Zagreb', position:'Centre-Forward', arPosition:'مهاجم صريح', height:'1.82 m', birth:'2006', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Young striker with European club experience.', arInfo:'مهاجم شاب يمتلك تجربة في أوروبا.', img:placeholder('Ibrahim Sabra','c8102e') },
+      { name:"Baha'a Faisal", arName:'بهاء فيصل', age:30, joined:'2015', club:'Al-Waab SC', position:'Centre-Forward', arPosition:'مهاجم صريح', height:'1.83 m', birth:'30 May 1995', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Experienced striker and long-time attacking option for Jordan.', arInfo:'مهاجم خبير وخيار هجومي قديم للمنتخب الأردني.', img:placeholder("Baha'a Faisal",'c8102e') },
+      { name:'Yazan Al-Naimat', arName:'يزن النعيمات', age:26, joined:'2019', club:'Al-Arabi SC', position:'Centre-Forward', arPosition:'مهاجم صريح', height:'1.80 m', birth:'4 June 1999', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Important Jordan striker known for movement, goals, and pressure on defenders.', arInfo:'مهاجم مهم في المنتخب الأردني معروف بالحركة وتسجيل الأهداف والضغط على المدافعين.', img:placeholder('Yazan Al-Naimat','c8102e') },
+      { name:'Ali Olwan', arName:'علي علوان', age:26, joined:'2021', club:'Al-Shamal SC', position:'Forward', arPosition:'مهاجم', height:'1.78 m', birth:'26 March 2000', injury:'No major current injury listed', arInjury:'لا توجد إصابة كبيرة حالية مذكورة', info:'Effective attacking player and one of Jordan’s important recent goal contributors.', arInfo:'لاعب هجومي مؤثر ومن أهم المساهمين بالأهداف مع الأردن في السنوات الأخيرة.', img:placeholder('Ali Olwan','c8102e') }
+    ];
+
+    let currentLang = 'en';
+    const langBtn = document.getElementById('langBtn');
+    const playersGrid = document.getElementById('playersGrid');
+
+    function renderPlayers() {
+      playersGrid.innerHTML = players.map(player => `
+        <article class="player-card">
+          <img src="${player.img}" alt="${currentLang === 'en' ? player.name : player.arName}" onerror="this.src=placeholder('${player.name.replace(/'/g, "\\'")}')">
+          <div class="player-mini">
+            <h3>${currentLang === 'en' ? player.name : player.arName}</h3>
+            <p>${currentLang === 'en' ? player.position : player.arPosition}</p>
+          </div>
+          <div class="player-info">
+            <h3>${currentLang === 'en' ? player.name : player.arName}</h3>
+            <p><b>${currentLang === 'en' ? 'Full Name:' : 'الاسم الكامل:'}</b> ${currentLang === 'en' ? player.name : player.arName}</p>
+            <p><b>${currentLang === 'en' ? 'Age:' : 'العمر:'}</b> ${player.age}</p>
+            <p><b>${currentLang === 'en' ? 'Position:' : 'المركز:'}</b> ${currentLang === 'en' ? player.position : player.arPosition}</p>
+            <p><b>${currentLang === 'en' ? 'Birth Date:' : 'تاريخ الميلاد:'}</b> ${player.birth}</p>
+            <p><b>${currentLang === 'en' ? 'Height:' : 'الطول:'}</b> ${player.height}</p>
+            <p><b>${currentLang === 'en' ? 'Joined National Team:' : 'تاريخ الانضمام للمنتخب:'}</b> ${player.joined}</p>
+            <p><b>${currentLang === 'en' ? 'Current Club:' : 'النادي الحالي:'}</b> ${player.club}</p>
+            <p><b>${currentLang === 'en' ? 'Injuries:' : 'الإصابات:'}</b> ${currentLang === 'en' ? player.injury : player.arInjury}</p>
+            <p><b>${currentLang === 'en' ? 'Extra Info:' : 'معلومات إضافية:'}</b> ${currentLang === 'en' ? player.info : player.arInfo}</p>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function answerQuestion(question) {
+      const original = question.trim();
+      const q = original.toLowerCase();
+      const isAr = currentLang === 'ar';
+
+      const player = players.find(p =>
+        q.includes(p.name.toLowerCase()) ||
+        original.includes(p.arName) ||
+        p.name.toLowerCase().split(' ').some(part => part.length > 3 && q.includes(part)) ||
+        p.arName.split(' ').some(part => part.length > 2 && original.includes(part))
+      );
+
+      const asksAge = q.includes('age') || original.includes('عمر') || original.includes('كم عمر');
+      const asksClub = q.includes('club') || original.includes('نادي') || original.includes('يلعب مع') || original.includes('يلعب في');
+      const asksPosition = q.includes('position') || original.includes('مركز');
+      const asksJoined = q.includes('join') || q.includes('joined') || original.includes('انضم') || original.includes('تاريخ الانضمام');
+      const asksInjury = q.includes('injury') || q.includes('injuries') || q.includes('injured') || original.includes('إصابة') || original.includes('اصابة') || original.includes('إصابات') || original.includes('اصابات');
+      const asksHeight = q.includes('height') || original.includes('طول') || original.includes('الطول');
+      const asksBirth = q.includes('birth') || q.includes('born') || original.includes('ميلاد') || original.includes('ولد');
+      const asksInfo = q.includes('info') || q.includes('about') || original.includes('معلومات') || original.includes('نبذة') || original.includes('عن');
+
+      if (player) {
+        if (asksAge) return isAr ? `عمر ${player.arName} هو ${player.age} سنة.` : `${player.name} is ${player.age} years old.`;
+        if (asksClub) return isAr ? `${player.arName} يلعب حاليًا مع ${player.club}.` : `${player.name} currently plays for ${player.club}.`;
+        if (asksPosition) return isAr ? `${player.arName} يلعب في مركز ${player.arPosition}.` : `${player.name} plays as a ${player.position}.`;
+        if (asksJoined) return isAr ? `انضم ${player.arName} للمنتخب عام ${player.joined}.` : `${player.name} joined the national team in ${player.joined}.`;
+        if (asksInjury) return isAr ? `الإصابات: ${player.arInjury}.` : `Injuries: ${player.injury}.`;
+        if (asksHeight) return isAr ? `طول ${player.arName} هو ${player.height}.` : `${player.name}'s height is ${player.height}.`;
+        if (asksBirth) return isAr ? `تاريخ ميلاد ${player.arName}: ${player.birth}.` : `${player.name}'s birth date is ${player.birth}.`;
+        return isAr
+          ? `${player.arName}: ${player.arPosition}، العمر ${player.age}، النادي الحالي ${player.club}، انضم للمنتخب عام ${player.joined}. الإصابات: ${player.arInjury}. ${player.arInfo}`
+          : `${player.name}: ${player.position}, age ${player.age}, current club ${player.club}, joined the national team in ${player.joined}. Injuries: ${player.injury}. ${player.info}`;
+      }
+
+      const goalScorers = isAr
+        ? 'أبرز هدافي المنتخب في آخر 5 سنوات تقريبًا: علي علوان، يزن النعيمات، موسى التعمري، بهاء فيصل، ومحمود مرضي.'
+        : 'Top Jordan scorers in roughly the last 5 years include Ali Olwan, Yazan Al-Naimat, Mousa Tamari, Baha’a Faisal, and Mahmoud Al-Mardi.';
+
+      const squadNames = isAr
+        ? players.map(p => p.arName).join('، ')
+        : players.map(p => p.name).join(', ');
+
+      const knowledge = [
+        {
+          keys: ['coach','manager','مدرب','المدربين','الجهاز الفني'],
+          en: 'The current head coach is Jamal Sellami. Hussein Ammouta was the former coach who led Jordan to the AFC Asian Cup 2023 final. The technical staff includes assistants, goalkeeper coach, fitness coach, medical staff, and administrators.',
+          ar: 'المدرب الحالي هو جمال سلامي. المدرب السابق الحسين عموتة قاد الأردن إلى نهائي كأس آسيا 2023. ويضم الجهاز الفني مساعدين ومدرب حراس ومدرب لياقة وطاقمًا طبيًا وإداريًا.'
+        },
+        {
+          keys: ['rank','ranking','fifa','ترتيب','تصنيف'],
+          en: 'Jordan is shown on this website around FIFA rank 63. FIFA rankings may change after every international window.',
+          ar: 'يعرض الموقع المنتخب الأردني تقريبًا في المركز 63 في تصنيف FIFA، وقد يتغير الترتيب بعد كل فترة مباريات دولية.'
+        },
+        {
+          keys: ['world cup','2026','كأس العالم','العالم'],
+          en: 'Jordan qualified for the FIFA World Cup 2026 for the first time in its history. The listed group matches are against Austria, Algeria, and Argentina.',
+          ar: 'تأهل المنتخب الأردني إلى كأس العالم 2026 لأول مرة في تاريخه. والمباريات المعروضة في المجموعة ضد النمسا والجزائر والأرجنتين.'
+        },
+        {
+          keys: ['achievement','title','asian cup','إنجاز','انجاز','القاب','ألقاب','كأس آسيا'],
+          en: 'Major achievements include reaching the AFC Asian Cup 2023 final and qualifying for the FIFA World Cup 2026 for the first time.',
+          ar: 'من أبرز الإنجازات الوصول إلى نهائي كأس آسيا 2023 والتأهل إلى كأس العالم 2026 لأول مرة.'
+        },
+        {
+          keys: ['kit','shirt','uniform','طقم','الأطقم','لباس','قميص'],
+          en: 'The kits are inspired by the Jordanian flag: the home kit is usually white, the away kit is red, and the third kit is green.',
+          ar: 'الأطقم مستوحاة من العلم الأردني: الطقم الأساسي غالبًا أبيض، والطقم الاحتياطي أحمر، والطقم الثالث أخضر.'
+        },
+        {
+          keys: ['formation','lineup','starting','bench','تشكيلة','خطة','احتياط'],
+          en: 'The example formation is 4-2-3-1. It includes Yazeed Abulaila as goalkeeper, a defensive line with Mohammad Abu Hasheesh, Yazan Al-Arab, Abdallah Nasib, and Ahmad Assaf, and Baha’a Faisal as centre-forward. The substitutes are listed under the formation section.',
+          ar: 'التشكيلة المقترحة هي 4-2-3-1. تضم يزيد أبو ليلى في الحراسة، وخط دفاع فيه محمد أبو حشيش ويزن العرب وعبدالله نصيب وأحمد عساف، وبهاء فيصل كمهاجم صريح. والاحتياط مذكور تحت قسم التشكيلة.'
+        },
+        {
+          keys: ['match','matches','fixture','fixtures','مباراة','مباريات'],
+          en: 'The listed 2026 matches are Austria vs Jordan on 17 June 2026, Jordan vs Algeria on 23 June 2026, and Jordan vs Argentina on 28 June 2026.',
+          ar: 'المباريات المعروضة لعام 2026 هي: النمسا ضد الأردن يوم 17 يونيو 2026، الأردن ضد الجزائر يوم 23 يونيو 2026، والأردن ضد الأرجنتين يوم 28 يونيو 2026.'
+        },
+        {
+          keys: ['scorer','goal','goals','هداف','هدافين','أهداف','اهداف'],
+          en: goalScorers,
+          ar: goalScorers
+        },
+        {
+          keys: ['players','squad','roster','لاعبين','اللاعبون','القائمة'],
+          en: `This website lists ${players.length} squad players: ${squadNames}. You can ask about any player by name.`,
+          ar: `يعرض هذا الموقع ${players.length} لاعبًا: ${squadNames}. يمكنك السؤال عن أي لاعب باسمه.`
+        },
+        {
+          keys: ['injury','injuries','إصابات','اصابات','إصابة','اصابة'],
+          en: 'The player cards include an injury field. Most players are marked as having no major current injury listed unless you update the data manually.',
+          ar: 'بطاقات اللاعبين تحتوي على خانة للإصابات. أغلب اللاعبين مكتوب لهم أنه لا توجد إصابة كبيرة حالية مذكورة إلا إذا عدّلتم البيانات يدويًا.'
+        }
+      ];
+
+      const found = knowledge.find(item => item.keys.some(k => q.includes(k) || original.includes(k)));
+      if (found) return isAr ? found.ar : found.en;
+
+      if (asksInfo) {
+        return isAr
+          ? 'المنتخب الأردني لكرة القدم يمثل الأردن دوليًا، وحقق إنجازات مهمة مثل نهائي كأس آسيا 2023 والتأهل التاريخي لكأس العالم 2026. يمكنك سؤالي عن لاعب، مدرب، إصابات، تشكيلة، مباريات، هدافين، أو أطقم.'
+          : 'The Jordan national football team represents Jordan internationally and has achieved major milestones such as the AFC Asian Cup 2023 final and the historic qualification for the FIFA World Cup 2026. You can ask me about a player, coach, injuries, formation, matches, scorers, or kits.';
+      }
+
+      return isAr
+        ? 'لم أفهم السؤال تمامًا، لكن أستطيع الإجابة عن: أسماء اللاعبين، العمر، النادي، المركز، الإصابات، تاريخ الانضمام، المدرب، الترتيب، الإنجازات، الهدافين، التشكيلة، والمباريات. جرّب سؤالًا مثل: ما إصابة موسى التعمري؟ أو من هدافو المنتخب؟'
+        : 'I did not fully understand the question, but I can answer about: player names, age, club, position, injuries, joining year, coach, ranking, achievements, scorers, formation, and matches. Try: What is Mousa Tamari’s injury? or Who are Jordan’s top scorers?';
+    }
+
+    function sendQuestion() {
+      const input = document.getElementById('userQuestion');
+      const chat = document.getElementById('chatMessages');
+      const question = input.value.trim();
+      if (!question) return;
+
+      const userDiv = document.createElement('div');
+      userDiv.className = 'user-msg';
+      userDiv.textContent = question;
+      chat.appendChild(userDiv);
+
+      const botDiv = document.createElement('div');
+      botDiv.className = 'bot-msg';
+      botDiv.textContent = answerQuestion(question);
+      chat.appendChild(botDiv);
+
+      input.value = '';
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function switchLanguage() {
+      currentLang = currentLang === 'en' ? 'ar' : 'en';
+      document.documentElement.lang = currentLang;
+      document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+      document.body.classList.toggle('ar', currentLang === 'ar');
+      langBtn.textContent = currentLang === 'en' ? 'العربية' : 'English';
+      document.querySelectorAll('[data-en]').forEach(element => {
+        element.textContent = element.getAttribute(`data-${currentLang}`);
+      });
+      document.querySelectorAll('[data-placeholder-en]').forEach(element => {
+        element.placeholder = element.getAttribute(`data-placeholder-${currentLang}`);
+      });
+      renderPlayers();
+    }
+
+    document.getElementById('askBtn').addEventListener('click', sendQuestion);
+    document.getElementById('userQuestion').addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') sendQuestion();
+    });
+
+    langBtn.addEventListener('click', switchLanguage);
+    renderPlayers();
+  </script>
+</body>
+</html>
